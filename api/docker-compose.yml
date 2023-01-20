@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+    dev:
+        depends_on:
+            - database
+        container_name: nestjs_api_dev
+        image: nestjs-api-dev:1.0.0
+        build:
+            context: ./vjing-api
+            target: development
+            dockerfile: ./Dockerfile
+        command: npm run start:debug
+        env_file: ./vjing-api/.env.development
+        ports:
+            - 3000:3000
+            - 9229:9229
+        networks:
+            - nesjs-network
+        volumes:
+            - ./vjing-api:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+    prod:
+        depends_on:
+            - database
+        container_name: nestjs_api_prod
+        image: nestjs-api-prod:1.0.0
+        build:
+            context: ./vjing-api
+            target: production
+            dockerfile: ./Dockerfile
+        command: npm run start:prod
+        env_file: ./vjing-api/.env
+        ports:
+            - 3000:3000
+            - 9229:9229
+        networks:
+            - nesjs-network
+        volumes:
+            - ./vjing-api:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+
+    database:
+        container_name: database
+        image: mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: vjing
+            MYSQL_USER: vjing
+            MYSQL_PASSWORD: vjing
+        ports:
+            - '4306:3306'
+        networks:
+            - nesjs-network
+        volumes:
+            - mariadb:/var/lib/mysql
+    adminer:
+        depends_on:
+            - database
+        image: adminer
+        restart: always
+        ports:
+            - 8081:8080
+        networks:
+            - nesjs-network
+            
+networks:
+    nesjs-network:
+
+volumes:
+  mariadb:
+    driver: local

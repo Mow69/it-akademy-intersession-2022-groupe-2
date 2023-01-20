@@ -1,0 +1,10 @@
+// Local generation
+node_modules
+npm-debug.log
+dist
+
+// Env
+.env
+.env.production
+.env.development
+.env.test

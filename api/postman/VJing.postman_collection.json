@@ -1,0 +1,821 @@
+{
+	"info": {
+		"_postman_id": "847302ec-4d8d-485e-92a1-d25ac411f190",
+		"name": "VJing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20387326"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Token",
+					"item": [
+						{
+							"name": "Get Token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let response = pm.response.json(),\r",
+											"savedData = JSON.stringify(response);\r",
+											"if(response['access_token'] && response['expires_in']){\r",
+											"    let expires_in = parseInt(response['expires_in'])\r",
+											"    pm.collectionVariables.set(\"access_token\", response['access_token']);\r",
+											"    pm.collectionVariables.set(\"expires_in\", expires_in);\r",
+											"    var expiryHalf = expires_in/2;\r",
+											"    var expiryDateHalf = new Date();\r",
+											"    expiryDateHalf.setSeconds(expiryDateHalf.getSeconds() + expiryHalf);\r",
+											"\r",
+											"    console.log(\"new expiration date:\"+expiryDateHalf)\r",
+											"    pm.collectionVariables.set(\"access_token_expire_date_half\", expiryDateHalf);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/auth/token/refresh",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"token",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json(),\r",
+									"savedData = JSON.stringify(response);\r",
+									"if(response['access_token'] && response['expires_in']){\r",
+									"    let expires_in = parseInt(response['expires_in'])\r",
+									"    pm.collectionVariables.set(\"access_token\", response['access_token']);\r",
+									"    pm.collectionVariables.set(\"expires_in\", expires_in);\r",
+									"    var expiryHalf = expires_in/2;\r",
+									"    var expiryDateHalf = new Date();\r",
+									"    expiryDateHalf.setSeconds(expiryDateHalf.getSeconds() + expiryHalf);\r",
+									"\r",
+									"    console.log(\"new expiration date:\"+expiryDateHalf)\r",
+									"    pm.collectionVariables.set(\"access_token_expire_date_half\", expiryDateHalf);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "test3@test597.fr",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "mdpquicangeTout1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rick@test.fr",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "mdpquicangeTout1",
+									"type": "text"
+								},
+								{
+									"key": "repeat_password",
+									"value": "mdpquicangeTout1",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "DE CILLIA",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "aurélien",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"access_token\", null);\r",
+									"pm.collectionVariables.set(\"access_token_expire_date_half\", null);\r",
+									"pm.collectionVariables.set(\"expires_in\", null);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GetProfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get userjson",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/1/userjson",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"1",
+								"userjson"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get userjsonDownloaded",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/1/userjson/downloaded",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"1",
+								"userjson",
+								"downloaded"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/11",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"11"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user by id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "testte1fd@sgdfhgfhgfst.frfjjj",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "mdpquicangeTout3",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Sanchez",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Rick",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "picklesrick",
+									"type": "text"
+								},
+								{
+									"key": "repeat_password",
+									"value": "mdpquicangeTout3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Filter",
+			"item": [
+				{
+					"name": "Create filter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "pa",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "ffdsfsfsdfsdf",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "sfsfsdfdsfdsfds",
+									"type": "text"
+								},
+								{
+									"key": "path",
+									"value": "fdsfsdgsdds",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "2400",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "video_ext_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/filter",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/filter",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/filter/9",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filter",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update filter",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "gfdg",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "10000",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/filter/22",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filter",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Filter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/filter/20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"filter",
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "price",
+									"value": "2400",
+									"type": "text"
+								},
+								{
+									"key": "is_downloaded",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "filter_id",
+									"value": "23",
+									"type": "text"
+								},
+								{
+									"key": "payment_method_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update order",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "ffsfdsgdfhdfh",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "10000",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/order/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/order/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"order",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const echoPostRequest = {",
+					"  url:  pm.collectionVariables.get('baseUrl')+'/auth/token/refresh',",
+					"  method: 'GET',",
+					"  header: {",
+					"        'content-type': 'application/json',",
+					"        'Authorization': 'Bearer '+pm.collectionVariables.get('access_token')",
+					"    },",
+					"  body: {",
+					"    mode: 'urlencoded',",
+					"    urlencoded: [",
+					"        { key: \"access_token\", value: pm.collectionVariables.get('access_token') },",
+					"    ]",
+					"  }",
+					"};",
+					"",
+					"let getToken = false;",
+					"let access_token = pm.collectionVariables.get('access_token');",
+					"let access_token_expiry = new Date(pm.collectionVariables.get('access_token_expire_date_half'));",
+					"console.log(new Date())",
+					"console.log(access_token_expiry)",
+					"",
+					"if(!access_token || !access_token_expiry){",
+					"    console.log('Token and refresh Token invalid, go in /auth/login for connect');",
+					"    return;",
+					"}",
+					"if (new Date().getTime() >= access_token_expiry.getTime()) {",
+					"    console.log('Token is half expired')",
+					"}else{",
+					"    getToken = true",
+					"    console.log('Token is valid');",
+					"    console.log('Token: ', access_token);",
+					"    console.log('Expiry (UNIX epoch): ', access_token_expiry.getTime());",
+					"    console.log('Expiry date: ', access_token_expiry);",
+					"    return;",
+					"}",
+					"",
+					"if (getToken === false) {",
+					"    pm.sendRequest(echoPostRequest, function (err, res) {",
+					"        console.log(err ? err : res.json());",
+					"        if (err === null) {",
+					"            console.log('Saving the token and expires_in')",
+					"            var response = res.json();",
+					"            let expires_in = parseInt(response['expires_in']);",
+					"            pm.collectionVariables.set('access_token', response['access_token']);",
+					"            pm.collectionVariables.set('expires_in',expires_in);",
+					"",
+					"            var expiryHalf = expires_in/2;",
+					"            var expiryDateHalf = new Date();",
+					"            ",
+					"            expiryDateHalf.setSeconds(expiryDateHalf.getSeconds() + expiryHalf);",
+					"",
+					"            console.log(\"refresh token at: \"+expiryDateHalf)",
+					"            pm.collectionVariables.set(\"access_token_expire_date_half\", expiryDateHalf);",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "expires_in",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "access_token_expire_date_half",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
